@@ -40,9 +40,4 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-    protected function authenticated(Request $request, $user)
-    {
-        $user->api_token = Str::random(60); // Generate a new API token
-        $user->save();
-    }
 }
