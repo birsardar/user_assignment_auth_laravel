@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use PHPUnit\TextUI\XmlConfiguration\Group;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,7 @@ Route::get('/', function () {
 Auth::routes(); // Auth::routes(['register' => false]); // disable register
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // Route::get('/add-tasks', [TaskController::class, 'showAddTaskForm']);
+    //     Route::view('/add-task', 'add-task');
+    //     Route::view('/change-status', 'change-status');
 });
