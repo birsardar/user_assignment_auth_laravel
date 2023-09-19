@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Task;
 
 class UserController extends Controller
 {
@@ -15,7 +16,10 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('user.dashboard', compact('user'));
+        $user_id = auth()->user()->id; // Get the currently logged-in user's ID
+        $tasks = Task::where('user_id', $user_id)->get(); // Get all the tasks of the currently logged-in user
+        // dd($tasks);
+        return view('user.dashboard', compact('user', 'tasks'));
     }
 
     /**

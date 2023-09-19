@@ -9,6 +9,7 @@ class TaskController extends Controller
 {
     public function addTask(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'user_id' => 'required',
             'task' => 'required',
@@ -54,6 +55,7 @@ class TaskController extends Controller
     // public function showAddTaskForm()
     // {
     //     $user_id = auth()->user()->id; // Get the currently logged-in user's ID
-    //     return view('add-task')->with('user_id', $user_id);
+    //     $tasks = Task::where('user_id', $user_id)->get(); // Get all the tasks of the currently logged-in user
+    //     return view('user.dashboard', compact('tasks'))->with('user_id', $user_id);
     // }
 }

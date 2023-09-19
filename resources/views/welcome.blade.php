@@ -34,8 +34,15 @@
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             @if (Route::has('login'))
                 @auth
-                    <a href="{{ url('/home') }}"
-                        class="  btn btn-primary text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
+                    {{-- <a href="{{ url('/home') }}"
+                        class="  btn btn-primary text-sm text-gray-700 dark:text-gray-500 underline">Home</a> --}}
+                    @if (Auth::user()->user_type == 'admin')
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="  btn btn-primary text-sm text-gray-700 dark:text-gray-500 underline">Admin Dashboard</a>
+                    @else
+                        <a href="{{ route('user.dashboard') }}"
+                            class="  btn btn-primary text-sm text-gray-700 dark:text-gray-500 underline">User Dashboard</a>
+                    @endif
                 @else
                     <a href="{{ route('login') }}"
                         class="  btn btn-primary text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>

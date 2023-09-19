@@ -9,10 +9,13 @@ class ApiAuthMiddleware
 {
     public function handle($request, Closure $next)
     {
-        if ($request->header('API_KEY') !== 'helloatg') {
+        $api_key = $request->header('API_KEY');
+        if ($api_key !== 'helloatg') {
+
             return response()->json([
                 'status' => 0,
                 'message' => 'Invalid API key',
+                'data' => 'data',
             ]);
         }
 
