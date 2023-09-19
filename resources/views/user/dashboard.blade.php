@@ -30,12 +30,15 @@
                     <td>{{ $task->created_at }}</td>
                     <td>
                         @if ($task->status === 'pending')
-                            <button class="change-status" data-task-id="{{ $task->id }}">
+                            <button class="btn btn-success change-status" data-task-id="{{ $task->id }}"
+                                data-new-status="done">
                                 Mark Done
                             </button>
                         @else
-                            <!-- Show a disabled button if the task is already done -->
-                            <button disabled>Done</button>
+                            <button class="btn btn-danger change-status" data-task-id="{{ $task->id }}"
+                                data-new-status="pending">
+                                Mark Pending
+                            </button>
                         @endif
                     </td>
                 </tr>
@@ -75,8 +78,10 @@
                             newRow.append('<td>' + task + '</td>');
                             newRow.append('<td>' + status + '</td>');
                             newRow.append('<td>' + response.task.created_at + '</td>');
-                            newRow.append('<td><button class="change-status" data-task-id="' +
-                                response.task.id + '">Mark Done</button></td>');
+                            newRow.append(
+                                '<td><button class="change-status btn btn-success" data-task-id="' +
+                                response.task.id +
+                                '" data-new-status="done">Mark Done</button></td>');
                             $('table tbody').append(newRow);
 
                             // Clear the input fields after adding the task
@@ -91,10 +96,11 @@
                 });
             });
 
-            // Handle the "Mark Done" button click event using event delegation
+            // Handle the "Mark Done" and "Mark Pending" button click events using event delegation
             $('table').on('click', '.change-status', function() {
                 var button = $(this);
                 var taskId = button.data('task-id');
+                var newStatus = button.data('new-status');
                 var apiKey = 'helloatg';
 
                 $.ajax({
@@ -102,7 +108,7 @@
                     url: '/api/todo/status',
                     data: {
                         task_id: taskId,
-                        status: 'done',
+                        status: newStatus,
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -112,10 +118,20 @@
                         // Update the UI to reflect the changed status
                         if (response.status === 1) {
                             // Update the status in the table cell
-                            button.closest('tr').find('td:nth-child(3)').text('done');
+                            var statusCell = button.closest('tr').find('td:nth-child(3)');
+                            statusCell.text(newStatus.charAt(0) + newStatus.slice(
+                                1));
 
-                            // Disable the button since the task is now done
-                            button.prop('disabled', true);
+                            // Update the button color based on the new status
+                            if (newStatus === 'done') {
+                                button.removeClass('btn-success').addClass('btn-danger');
+                                button.text('Mark Pending');
+                                button.data('new-status', 'pending');
+                            } else {
+                                button.removeClass('btn-danger').addClass('btn-success');
+                                button.text('Mark Done');
+                                button.data('new-status', 'done');
+                            }
                         } else {
                             console.log('Status not updated. API response:', response);
                         }
