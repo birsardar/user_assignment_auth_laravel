@@ -9,7 +9,7 @@
     </div>
     <form id="add-task-form">
         <input type="text" id="task-name" placeholder="Enter task name" />
-        <button type="submit">Add Task</button>
+        <button type="submit" class="btn btn-primary btn-sm">Add Task</button>
     </form>
     <table class="table">
         <thead class="thead-light">
@@ -18,7 +18,7 @@
                 <th scope="col">Task</th>
                 <th scope="col">Status</th>
                 <th scope="col">Created At</th>
-                <th scope="col">Action</th>
+                <th scope="col" style="width: 150px;">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -119,7 +119,7 @@
                         if (response.status === 1) {
                             // Update the status in the table cell
                             var statusCell = button.closest('tr').find('td:nth-child(3)');
-                            statusCell.text(newStatus.charAt(0) + newStatus.slice(
+                            statusCell.text(newStatus.charAt(0).toUpperCase() + newStatus.slice(
                                 1));
 
                             // Update the button color based on the new status
